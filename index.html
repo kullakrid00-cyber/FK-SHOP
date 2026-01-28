@@ -3,99 +3,74 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title id="t-tag">FK SHOP</title>
+    <title>FK SHOP</title>
     <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;600&family=Chakra+Petch:wght@700&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        :root { --p: #0062ff; --s: #00f2fe; --bg: #050508; --card: #111118; --text: #ffffff; --grad: linear-gradient(135deg, #0062ff 0%, #00f2fe 100%); --danger: #ff3e3e; }
-        * { box-sizing: border-box; font-family: 'Kanit', sans-serif; transition: all 0.3s ease; }
+        :root { --p: #00d2ff; --s: #3a7bd5; --bg: #08090b; --card: rgba(255, 255, 255, 0.05); --text: #ffffff; --grad: linear-gradient(135deg, #00d2ff 0%, #3a7bd5 100%); --neon: 0 0 15px rgba(0, 210, 255, 0.4); }
+        * { box-sizing: border-box; font-family: 'Kanit', sans-serif; transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
         body { background: var(--bg); color: var(--text); margin: 0; min-height: 100vh; overflow-x: hidden; }
 
         /* Header ผู้จัดทำ */
-        .author-header { background: rgba(0,0,0,0.9); color: #fff; padding: 12px; text-align: center; border-bottom: 2px solid var(--p); font-size: 0.9rem; position: sticky; top: 0; z-index: 2000; backdrop-filter: blur(10px); }
-        .author-header b { color: var(--s); text-shadow: 0 0 10px rgba(0,242,254,0.5); }
+        .dev-header { background: rgba(0,0,0,0.9); color: #fff; padding: 12px; text-align: center; border-bottom: 2px solid var(--p); font-size: 0.9rem; position: sticky; top: 0; z-index: 2000; backdrop-filter: blur(10px); }
+        .dev-header b { color: var(--p); text-shadow: var(--neon); }
 
-        nav { background: rgba(17, 17, 24, 0.85); backdrop-filter: blur(20px); padding: 15px 0; border-bottom: 1px solid rgba(255,255,255,0.05); position: sticky; top: 45px; z-index: 1000; }
+        /* ✨ UI กล่องข้อความแบบใหม่ (Neon Glass) */
+        .glass-input-group { position: relative; margin-bottom: 25px; }
+        .glass-input-group i { position: absolute; left: 18px; top: 16px; color: var(--p); font-size: 1.2rem; }
+        .glass-in { 
+            width: 100%; padding: 15px 15px 15px 50px; background: rgba(255,255,255,0.03); 
+            border: 1px solid rgba(255,255,255,0.1); border-radius: 18px; color: #fff; outline: none; font-size: 1rem;
+            box-shadow: inset 0 2px 10px rgba(0,0,0,0.5);
+        }
+        .glass-in:focus { 
+            border-color: var(--p); background: rgba(255,255,255,0.07);
+            box-shadow: 0 0 20px rgba(0, 210, 255, 0.2), inset 0 2px 10px rgba(0,0,0,0.5); transform: translateY(-2px);
+        }
+
+        nav { background: rgba(8, 9, 11, 0.85); backdrop-filter: blur(20px); padding: 15px 0; border-bottom: 1px solid rgba(255,255,255,0.05); position: sticky; top: 45px; z-index: 1000; }
         .nav-cnt { max-width: 1200px; margin: 0 auto; padding: 0 20px; display: flex; justify-content: space-between; align-items: center; gap: 15px; }
         
-        /* UI กล่องเขียนข้อความแบบสวยงาม */
-        .input-group { position: relative; margin-bottom: 20px; text-align: left; }
-        .input-group i { position: absolute; left: 15px; top: 50%; transform: translateY(-50%); color: var(--p); }
-        input, select, textarea { 
-            width: 100%; padding: 14px 15px 14px 45px; background: rgba(255,255,255,0.03); 
-            border: 1px solid rgba(255,255,255,0.1); border-radius: 15px; color: #fff; outline: none; font-size: 1rem;
-        }
-        input:focus, textarea:focus { 
-            background: rgba(255,255,255,0.07); border-color: var(--s); 
-            box-shadow: 0 0 15px rgba(0, 242, 254, 0.2); transform: translateY(-2px);
-        }
-
-        .container { max-width: 1200px; margin: 0 auto; padding: 25px 20px; }
-        .btn { border: none; padding: 12px 25px; border-radius: 15px; font-weight: 600; cursor: pointer; display: inline-flex; align-items: center; gap: 10px; justify-content: center; }
-        .btn-p { background: var(--grad); color: white; box-shadow: 0 5px 20px rgba(0, 98, 255, 0.3); }
-        .btn-p:hover { transform: scale(1.05); box-shadow: 0 8px 25px rgba(0, 242, 254, 0.4); }
+        .btn { border: none; padding: 12px 25px; border-radius: 16px; font-weight: 600; cursor: pointer; display: inline-flex; align-items: center; gap: 10px; }
+        .btn-p { background: var(--grad); color: white; box-shadow: var(--neon); }
+        .btn-p:hover { transform: scale(1.05); filter: brightness(1.2); }
         .btn-glass { background: rgba(255,255,255,0.05); color: white; border: 1px solid rgba(255,255,255,0.1); }
-        .btn-glass:hover { background: rgba(255,255,255,0.1); }
 
-        .cat-bar { display: flex; gap: 12px; overflow-x: auto; padding-bottom: 15px; scrollbar-width: none; }
-        .cat-item { padding: 10px 25px; background: var(--card); border-radius: 50px; cursor: pointer; white-space: nowrap; border: 1px solid rgba(255,255,255,0.05); }
-        .cat-item.active { background: var(--grad); border: none; color: #fff; font-weight: 600; }
-
-        .p-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 25px; }
-        .p-card { background: var(--card); border-radius: 35px; overflow: hidden; border: 1px solid rgba(255,255,255,0.03); position: relative; }
-        .p-img-box { width: 100%; height: 230px; background: #000; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 30px 20px; }
+        .p-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 30px; }
+        .p-card { background: var(--card); border-radius: 40px; border: 1px solid rgba(255,255,255,0.03); overflow: hidden; position: relative; }
+        .p-img-box { width: 100%; height: 260px; background: #000; display: flex; align-items: center; justify-content: center; overflow: hidden; }
         .p-img { max-width: 100%; max-height: 100%; object-fit: contain; }
 
-        .badge { background: var(--danger); color: white; padding: 3px 8px; border-radius: 8px; font-size: 0.75rem; position: absolute; top: 15px; right: 15px; }
-        
-        .tab-content { display: none; }
-        .tab-content.active { display: block; animation: fadeIn 0.4s; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        .admin-box { background: #fff; color: #111; padding: 20px; border-radius: 25px; margin-bottom: 15px; display: flex; justify-content: space-between; align-items: center; border-left: 8px solid var(--p); }
 
-        .admin-item { background: #f8f9fa; color: #1a1a20; padding: 18px; border-radius: 20px; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center; border-left: 5px solid var(--p); }
-
-        @media (max-width: 768px) {
-            .nav-cnt { flex-wrap: wrap; }
-            .search-box { order: 3; max-width: 100%; width: 100%; }
-        }
+        @media (max-width: 768px) { .nav-cnt { flex-wrap: wrap; } .search-box { order: 3; width: 100%; } }
     </style>
 </head>
 <body>
 
-<div class="author-header">
-    👑 <b>นายกุลกิตติ์ คอนกำลัง</b> (15) & <b>นายปภังกร ชูเกิด</b> (26) 
+<div class="dev-header">
+    🛡️ ผู้จัดทำ: <b>นายกุลกิตติ์ คอนกำลัง</b> (15) & <b>นายปภังกร ชูเกิด</b> (26) 
 </div>
 
 <div id="auth-ui" style="min-height:90vh; display:flex; align-items:center; justify-content:center; padding:20px;">
-    <div style="width:100%; max-width:420px; background:var(--card); padding:50px 40px; border-radius:45px; text-align:center; border:1px solid rgba(255,255,255,0.05); box-shadow: 0 30px 60px rgba(0,0,0,0.5);">
-        <img id="l-logo" style="width:100px; height:100px; border-radius:25px; margin-bottom:25px; box-shadow: 0 10px 20px rgba(0,0,0,0.3);">
-        <h2 id="l-name" style="margin-bottom:35px; font-family:'Chakra Petch'; letter-spacing:1px; color:var(--s);">...</h2>
+    <div style="width:100%; max-width:420px; text-align:center; background:rgba(255,255,255,0.02); padding:50px 30px; border-radius:50px; border:1px solid rgba(255,255,255,0.05);">
+        <img id="l-logo" style="width:120px; height:120px; border-radius:35px; margin-bottom:30px; box-shadow: 0 20px 40px rgba(0,0,0,0.5);">
+        <h2 id="l-name" style="margin-bottom:40px; font-family:'Chakra Petch'; color:var(--p);">...</h2>
         
         <div id="login-box">
-            <div class="input-group">
-                <i class="fa-solid fa-user"></i>
-                <input type="text" id="u_in" placeholder="ชื่อผู้ใช้งาน">
-            </div>
-            <div class="input-group">
-                <i class="fa-solid fa-lock"></i>
-                <input type="password" id="p_in" placeholder="รหัสผ่าน">
-            </div>
-            <button class="btn btn-p" style="width:100%; padding:16px;" onclick="login()">เข้าสู่ระบบ</button>
-            <p style="margin-top:20px; opacity:0.6; font-size:0.9rem;">ยังไม่เคยใช้งาน? <a href="javascript:toggleAuth(true)" style="color:var(--s); text-decoration:none; font-weight:600;">สมัครสมาชิกใหม่</a></p>
+            <div class="glass-input-group"><i class="fa fa-user"></i><input type="text" id="u_in" class="glass-in" placeholder="ชื่อผู้ใช้งาน"></div>
+            <div class="glass-input-group"><i class="fa fa-lock"></i><input type="password" id="p_in" class="glass-in" placeholder="รหัสผ่าน"></div>
+            <button class="btn btn-p" style="width:100%; justify-content:center;" onclick="login()">เข้าสู่ระบบ</button>
+            <p style="margin-top:25px; opacity:0.6;">ยังไม่มีสมาชิก? <a href="javascript:toggleAuth(true)" style="color:var(--p); text-decoration:none;">สมัครสมาชิกใหม่</a></p>
         </div>
 
         <div id="register-box" style="display:none;">
-            <div class="input-group">
-                <i class="fa-solid fa-user-plus"></i>
-                <input type="text" id="u_reg" placeholder="ตั้งชื่อผู้ใช้งาน">
-            </div>
-            <div class="input-group">
-                <i class="fa-solid fa-key"></i>
-                <input type="password" id="p_reg" placeholder="ตั้งรหัสผ่าน">
-            </div>
-            <button class="btn btn-p" style="width:100%; padding:16px;" onclick="register()">สร้างบัญชี</button>
-            <p style="margin-top:20px; opacity:0.6; font-size:0.9rem;">เป็นสมาชิกอยู่แล้ว? <a href="javascript:toggleAuth(false)" style="color:var(--s); text-decoration:none; font-weight:600;">เข้าสู่ระบบ</a></p>
+            <div class="glass-input-group"><i class="fa fa-user-plus"></i><input type="text" id="u_reg" class="glass-in" placeholder="ชื่อผู้ใช้ใหม่"></div>
+            <div class="glass-input-group"><i class="fa fa-key"></i><input type="password" id="p_reg" class="glass-in" placeholder="ตั้งรหัสผ่าน"></div>
+            <button class="btn btn-p" style="width:100%; justify-content:center; background:var(--s);" onclick="register()">ยืนยันการสมัคร</button>
+            <p style="margin-top:25px; opacity:0.6;">มีบัญชีอยู่แล้ว? <a href="javascript:toggleAuth(false)" style="color:var(--p); text-decoration:none;">กลับไปล็อกอิน</a></p>
         </div>
     </div>
 </div>
@@ -104,47 +79,53 @@
     <nav>
         <div class="nav-cnt">
             <div style="display:flex; align-items:center; gap:12px;">
-                <img id="n-logo" style="width:42px; height:42px; border-radius:12px; object-fit:cover;">
-                <span id="n-name" style="font-family:'Chakra Petch'; font-weight:700; font-size:1.1rem; background:var(--grad); -webkit-background-clip:text; -webkit-text-fill-color:transparent;">...</span>
+                <img id="n-logo" style="width:45px; height:45px; border-radius:15px;">
+                <span id="n-name" style="font-family:'Chakra Petch'; font-weight:700; font-size:1.3rem;">...</span>
             </div>
             <div class="search-box" style="flex-grow:1; max-width:400px; position:relative;">
-                <i class="fa-solid fa-search" style="position:absolute; left:15px; top:13px; color:var(--s);"></i>
-                <input type="text" id="search-in" placeholder="ค้นหาสินค้า..." oninput="renderProds()" style="padding-left:45px;">
+                <i class="fa fa-search" style="position:absolute; left:18px; top:14px; color:var(--p);"></i>
+                <input type="text" class="glass-in" id="search-q" placeholder="ค้นหาสินค้าที่ต้องการ..." oninput="renderProds()" style="padding-top:12px; padding-bottom:12px;">
             </div>
             <div style="display:flex; gap:10px;">
-                <button class="btn btn-glass" style="color:#00ff88; border:none;" onclick="contactLine()"><i class="fa-brands fa-line"></i></button>
+                <button class="btn btn-glass" style="color:#1877F2;" onclick="contactFB()"><i class="fa-brands fa-facebook"></i></button>
+                <button class="btn btn-glass" style="color:#06C755;" onclick="contactLine()"><i class="fa-brands fa-line"></i></button>
                 <button class="btn btn-glass" style="position:relative;" onclick="showCart()">
-                    <i class="fa-solid fa-basket-shopping"></i> <span id="cart-count" style="position:absolute; top:-5px; right:-5px; background:var(--danger); font-size:0.65rem; padding:2px 6px; border-radius:10px;">0</span>
+                    <i class="fa fa-shopping-basket"></i> <span id="cart-count" style="position:absolute; top:-5px; right:-5px; background:red; font-size:0.7rem; padding:2px 6px; border-radius:50%;">0</span>
                 </button>
-                <button id="adm-btn" class="btn btn-glass" style="display:none; color:gold;" onclick="openAdmin()"><i class="fa-solid fa-crown"></i></button>
-                <button class="btn btn-glass" onclick="logout()"><i class="fa-solid fa-power-off"></i></button>
+                <button id="adm-btn" class="btn btn-glass" style="display:none; color:gold;" onclick="openAdmin()"><i class="fa fa-crown"></i></button>
+                <button class="btn btn-glass" onclick="logout()"><i class="fa fa-power-off"></i></button>
             </div>
         </div>
     </nav>
 
     <div class="container">
-        <div style="background:var(--grad); padding:50px 20px; border-radius:40px; text-align:center; margin-bottom:40px; box-shadow: 0 20px 40px rgba(0, 98, 255, 0.25);">
-            <p style="margin:0; opacity:0.8; font-size:1.1rem;">ยินดีต้อนรับคุณ <b id="u-user">...</b></p>
-            <h1 style="font-size:4rem; margin:10px 0; font-family:'Chakra Petch';">฿ <span id="u-bal">0.00</span></h1>
-            <div style="display:flex; gap:12px; justify-content:center; flex-wrap:wrap; margin-top:20px;">
-                <button class="btn btn-p" style="background:#fff; color:#000;" onclick="topupMenu()">เติมเงินเข้าระบบ</button>
-                <button class="btn btn-glass" onclick="history()">ประวัติการใช้งาน</button>
-                <button class="btn btn-glass" onclick="editAddress()"><i class="fa-solid fa-location-dot"></i> ที่อยู่</button>
+        <div style="background:var(--grad); padding:60px 20px; border-radius:50px; text-align:center; margin-bottom:40px; box-shadow: var(--neon);">
+            <p style="opacity:0.9; letter-spacing:1px;">ยินดีต้อนรับคุณ <b id="u-user">...</b></p>
+            <h1 style="font-size:4.5rem; margin:10px 0; font-family:'Chakra Petch';">฿ <span id="u-bal">0.00</span></h1>
+            <div style="display:flex; gap:15px; justify-content:center; flex-wrap:wrap; margin-top:25px;">
+                <button class="btn btn-p" style="background:#fff; color:#000;" onclick="topupMenu()">เติมเงิน</button>
+                <button class="btn btn-glass" onclick="history()">ประวัติการสั่งซื้อ</button>
+                <button class="btn btn-glass" onclick="editAddress()"><i class="fa fa-location-dot"></i> ที่อยู่</button>
             </div>
         </div>
 
-        <div class="cat-bar" id="ui-cats"></div>
+        <div id="ui-cats" style="display:flex; gap:12px; overflow-x:auto; padding-bottom:25px; scrollbar-width: none;"></div>
         <div id="ui-prods" class="p-grid"></div>
     </div>
 </div>
 
 <script>
+    // --- Database Engine (Ready for Cloud Sync) ---
     const DB = {
-        get: (k) => JSON.parse(localStorage.getItem(`v90_${k}`)) || [],
-        set: (k, v) => localStorage.setItem(`v90_${k}`, JSON.stringify(v)),
-        conf: () => JSON.parse(localStorage.getItem('v90_c')) || { 
-            name: 'NEXUS ELITE', logo: 'https://cdn-icons-png.flaticon.com/512/3081/3081559.png',
-            bank_n: '000-0-00000-0', bank_t: 'กสิกรไทย', wallet: '095-xxx-xxxx', owner: 'ADMIN NAME', line: 'mylineid'
+        get: (k) => JSON.parse(localStorage.getItem(`v110_${k}`)) || [],
+        set: (k, v) => {
+            localStorage.setItem(`v110_${k}`, JSON.stringify(v));
+            // ตรงนี้คือจุดที่สามารถใส่ API fetch เพื่อส่งข้อมูลไปยัง Server ให้ซิงค์กันทุกอุปกรณ์ได้
+        },
+        conf: () => JSON.parse(localStorage.getItem('v110_c')) || { 
+            name: 'NEXUS PREMIUM', logo: 'https://cdn-icons-png.flaticon.com/512/3081/3081559.png',
+            bank_n: '000-0-00000-0', bank_t: 'กสิกรไทย', wallet: '095-xxx-xxxx', owner: 'แอดมิน',
+            line: 'https://line.me/ti/p/yourid', fb: 'https://facebook.com/yourpage'
         },
         log: (u, action) => {
             let logs = DB.get('logs');
@@ -153,25 +134,25 @@
         }
     };
 
-    let session = JSON.parse(localStorage.getItem('v90_ses'));
+    let session = JSON.parse(localStorage.getItem('v110_ses'));
     let cart = [];
     let currentCat = 'ทั้งหมด';
     let appliedPromo = null;
 
     window.onload = () => {
         if(DB.get('users').length === 0) DB.set('users', [{u:'admin', p:'1234', r:'admin', b:0, h:[], addr:''}]);
-        if(DB.get('cats').length === 0) DB.set('cats', ['โปรโมชั่น', 'สินค้าใหม่']);
-        refreshBranding();
+        if(DB.get('cats').length === 0) DB.set('cats', ['สินค้ายอดฮิต', 'หมวดหมู่ใหม่']);
+        refreshUI();
         if(session) {
             document.getElementById('auth-ui').style.display = 'none';
             document.getElementById('app-ui').style.display = 'block';
             document.getElementById('u-user').innerText = session.u;
             if(session.r === 'admin') document.getElementById('adm-btn').style.display = 'flex';
-            updateUI(); renderCats(); renderProds();
+            updateBalance(); renderCats(); renderProds();
         }
     };
 
-    function refreshBranding() {
+    function refreshUI() {
         const c = DB.conf();
         document.getElementById('n-name').innerText = c.name;
         document.getElementById('l-name').innerText = c.name;
@@ -179,7 +160,7 @@
         document.getElementById('l-logo').src = c.logo;
     }
 
-    // --- AUTH SYSTEMS ---
+    // --- Authentication ---
     function toggleAuth(isReg) {
         document.getElementById('login-box').style.display = isReg ? 'none' : 'block';
         document.getElementById('register-box').style.display = isReg ? 'block' : 'none';
@@ -187,42 +168,41 @@
 
     function login() {
         const u = document.getElementById('u_in').value.trim(), p = document.getElementById('p_in').value.trim();
-        let users = DB.get('users'), f = users.find(x => x.u === u);
-        if(!f) return Swal.fire('ไม่พบผู้ใช้งาน','กรุณาตรวจสอบชื่อหรือสมัครสมาชิก','error');
-        if(f.p !== p) return Swal.fire('รหัสผ่านผิด','กรุณาลองใหม่อีกครั้ง','warning');
-        localStorage.setItem('v90_ses', JSON.stringify(f)); DB.log(u, 'เข้าสู่ระบบ'); location.reload();
+        const users = DB.get('users'), f = users.find(x => x.u === u);
+        if(!f) return Swal.fire('ไม่พบผู้ใช้งาน','กรุณาสมัครสมาชิกก่อน','error');
+        if(f.p !== p) return Swal.fire('รหัสผ่านไม่ถูกต้อง','','warning');
+        localStorage.setItem('v110_ses', JSON.stringify(f)); DB.log(u, 'เข้าสู่ระบบ'); location.reload();
     }
 
     function register() {
         const u = document.getElementById('u_reg').value.trim(), p = document.getElementById('p_reg').value.trim();
-        if(u.length < 3 || p.length < 4) return Swal.fire('ข้อมูลไม่ครบ','ชื่อต้อง 3 ตัวอักษรขึ้นไป','warning');
+        if(u.length < 3 || p.length < 4) return Swal.fire('ข้อมูลไม่ถูกต้อง','ชื่อต้อง 3 ตัวอักษรขึ้นไป','warning');
         let users = DB.get('users');
-        if(users.find(x => x.u === u)) return Swal.fire('ชื่อนี้ถูกใช้แล้ว','กรุณาใช้ชื่ออื่น','error');
+        if(users.find(x => x.u === u)) return Swal.fire('ชื่อนี้ถูกใช้งานแล้ว','','error');
         users.push({u, p, r:'member', b:0, h:[], addr:''});
         DB.set('users', users); DB.log(u, 'สมัครสมาชิก');
         Swal.fire('สำเร็จ','สมัครสมาชิกแล้ว เข้าสู่ระบบได้ทันที','success').then(() => toggleAuth(false));
     }
 
-    function logout() { localStorage.removeItem('v90_ses'); location.reload(); }
+    function logout() { localStorage.removeItem('v110_ses'); location.reload(); }
 
-    function updateUI() { 
+    function updateBalance() { 
         const u = DB.get('users').find(x => x.u === session.u);
-        document.getElementById('u-bal').innerText = u.b.toLocaleString(undefined, {minimumFractionDigits:2});
+        document.getElementById('u-bal').innerText = u.b.toLocaleString(undefined,{minimumFractionDigits:2});
         document.getElementById('cart-count').innerText = cart.length;
     }
 
-    // --- STORE CORE ---
+    // --- Store & Shopping ---
     function renderCats() {
         const cats = ['ทั้งหมด', ...DB.get('cats')];
         document.getElementById('ui-cats').innerHTML = cats.map(c => 
-            `<div class="cat-item ${currentCat === c ? 'active' : ''}" onclick="setCat('${c}')">${c}</div>`
+            `<button class="btn ${currentCat === c ? 'btn-p' : 'btn-glass'}" onclick="setCat('${c}')">${c}</button>`
         ).join('');
     }
-
     function setCat(c) { currentCat = c; renderCats(); renderProds(); }
 
     function renderProds() {
-        const q = document.getElementById('search-in').value.toLowerCase();
+        const q = document.getElementById('search-q').value.toLowerCase();
         let p = DB.get('prods');
         if(currentCat !== 'ทั้งหมด') p = p.filter(x => x.cat === currentCat);
         if(q) p = p.filter(x => x.name.toLowerCase().includes(q));
@@ -230,57 +210,57 @@
         document.getElementById('ui-prods').innerHTML = p.map(x => `
             <div class="p-card">
                 <div class="p-img-box"><img src="${x.img}" class="p-img"></div>
-                <div style="padding:20px;">
-                    <small style="color:var(--s); font-weight:600;">${x.cat}</small>
-                    <h3 style="margin:8px 0; font-size:1.1rem; height:45px; overflow:hidden;">${x.name}</h3>
-                    <div style="font-size:1.5rem; font-weight:bold; color:var(--s); margin-bottom:15px;">฿${x.price}</div>
-                    <button class="btn btn-p" style="width:100%;" onclick="addToCart(${x.id})"><i class="fa-solid fa-cart-plus"></i> เพิ่มลงตะกร้า</button>
+                <div style="padding:25px;">
+                    <small style="color:var(--p); font-weight:600;">${x.cat}</small>
+                    <h3 style="margin:10px 0; font-size:1.1rem; height:50px; overflow:hidden;">${x.name}</h3>
+                    <div style="font-size:1.6rem; font-weight:700; color:var(--p); margin-bottom:15px;">฿${x.price}</div>
+                    <button class="btn btn-p" style="width:100%; justify-content:center;" onclick="addToCart(${x.id})">เพิ่มลงตะกร้า</button>
                 </div>
             </div>
-        `).join('') || '<p style="grid-column:1/-1; text-align:center; opacity:0.5; padding:50px;">ไม่พบรายการสินค้า</p>';
+        `).join('') || '<p style="grid-column:1/-1; text-align:center; opacity:0.5; padding:50px;">ไม่มีข้อมูลสินค้า</p>';
     }
 
     function addToCart(id) {
         const p = DB.get('prods').find(x => x.id === id);
-        if(!p || p.stock.length === 0) return Swal.fire('สินค้าหมด','','error');
-        cart.push(p); updateUI();
-        Swal.fire({text:'เพิ่มเข้าตะกร้าแล้ว', toast:true, position:'top-end', timer:1000, showConfirmButton:false, icon:'success'});
+        if(!p || p.stock.length === 0) return Swal.fire('สินค้าหมด','ขออภัย สินค้านี้หมดชั่วคราว','error');
+        cart.push(p); updateBalance();
+        Swal.fire({text:'เพิ่มเข้าตะกร้าแล้ว', toast:true, position:'top-end', timer:800, showConfirmButton:false, icon:'success'});
     }
 
     function showCart() {
-        if(!cart.length) return Swal.fire('ตะกร้าว่าง','','info');
+        if(!cart.length) return Swal.fire('ตะกร้าว่าง','กรุณาเลือกสินค้าก่อน','info');
         let total = cart.reduce((s, i) => s + i.price, 0);
         Swal.fire({
-            title: 'ตะกร้าสินค้า',
-            html: `<div style="text-align:left; color:#1a1a20;">
-                ${cart.map((it, i) => `<div style="display:flex; justify-content:space-between; padding:10px 0; border-bottom:1px solid #eee;"><span>${it.name}</span><b>฿${it.price} <i onclick="removeFromCart(${i})" class="fa-solid fa-trash-alt" style="color:red; cursor:pointer; margin-left:10px;"></i></b></div>`).join('')}
-                <div style="margin-top:15px; display:flex; gap:8px;">
-                    <input id="p_code" placeholder="โค้ดส่วนลด" style="margin:0; flex-grow:1; color:#000; padding-left:15px; border:2px solid #eee;">
-                    <button class="btn btn-p" style="padding:10px;" onclick="applyCode()">ใช้</button>
+            title: 'รายการในตะกร้า',
+            html: `<div style="text-align:left; color:#222;">
+                ${cart.map((it, i) => `<div style="display:flex; justify-content:space-between; padding:12px 0; border-bottom:1px solid #eee;"><span>${it.name}</span><b>฿${it.price} <i onclick="removeFromCart(${i})" class="fa fa-circle-xmark" style="color:red; cursor:pointer; margin-left:10px;"></i></b></div>`).join('')}
+                <div style="margin-top:20px; display:flex; gap:10px;">
+                    <input id="p_code" class="glass-in" placeholder="ใส่โค้ดส่วนลด" style="margin:0; flex-grow:1; color:#000; border:2px solid #ddd; height:45px;">
+                    <button class="btn btn-p" onclick="applyCode()">ใช้</button>
                 </div>
-                <h2 style="text-align:right; margin-top:20px; color:#000;" id="t-display">ยอดรวม: ฿${total}</h2></div>`,
-            showCancelButton: true, confirmButtonText: 'ชำระเงิน', cancelButtonText: 'ยกเลิกทั้งหมด', reverseButtons: true
-        }).then(res => { if(res.isConfirmed) checkout(); else if(res.dismiss === Swal.DismissReason.cancel) { cart = []; appliedPromo = null; updateUI(); } });
+                <h2 style="text-align:right; margin-top:25px;" id="c-total">ยอดรวมทั้งสิ้น: ฿${total}</h2></div>`,
+            showCancelButton: true, confirmButtonText: 'ชำระเงิน', cancelButtonText: 'ล้างตะกร้า', reverseButtons: true
+        }).then(res => { if(res.isConfirmed) checkout(); else if(res.dismiss === Swal.DismissReason.cancel) { cart = []; appliedPromo = null; updateBalance(); } });
     }
 
     function applyCode() {
-        const code = document.getElementById('p_code').value;
-        const codes = DB.get('codes'), f = codes.find(x => x.c === code);
+        const cVal = document.getElementById('p_code').value;
+        const codes = DB.get('codes'), f = codes.find(x => x.c === cVal);
         if(f && f.l > 0) {
             appliedPromo = f;
             let total = cart.reduce((s, i) => s + i.price, 0) - f.v;
-            document.getElementById('t-display').innerText = `ยอดรวม: ฿${total > 0 ? total : 0} (ลด ฿${f.v})`;
-            Swal.fire('สำเร็จ',`ใช้โค้ดลดราคาได้ ฿${f.v} (เหลือให้ใช้ได้อีก ${f.l-1} ครั้ง)`,'success');
-        } else { Swal.fire('โค้ดผิดพลาด','โค้ดไม่ถูกต้องหรือสิทธิ์การใช้เต็มแล้ว','error'); }
+            document.getElementById('c-total').innerText = `ยอดรวมทั้งสิ้น: ฿${total > 0 ? total : 0} (ลดไป ฿${f.v})`;
+            Swal.fire('สำเร็จ',`ลดราคาให้ ฿${f.v} (สิทธิ์คงเหลือ ${f.l-1} ครั้ง)`,'success');
+        } else { Swal.fire('โค้ดผิดพลาด','โค้ดไม่ถูกต้องหรือสิทธิ์เต็มแล้ว','error'); }
     }
 
-    function removeFromCart(i) { cart.splice(i, 1); updateUI(); cart.length ? showCart() : Swal.close(); }
+    function removeFromCart(i) { cart.splice(i, 1); updateBalance(); cart.length ? showCart() : Swal.close(); }
 
     function checkout() {
         let us = DB.get('users'), u = us.find(x => x.u === session.u);
         let total = cart.reduce((s, i) => s + i.price, 0) - (appliedPromo ? appliedPromo.v : 0);
         total = total < 0 ? 0 : total;
-        if(u.b < total) return Swal.fire('ยอดเงินของคุณไม่เพียงพอ','กรุณาเติมเงินเข้าระบบ','warning');
+        if(u.b < total) return Swal.fire('เงินไม่เพียงพอ','กรุณาเติมเงินเข้าระบบก่อน','warning');
         
         const prods = DB.get('prods'), codes = DB.get('codes');
         if(appliedPromo) { let c = codes.find(x => x.c === appliedPromo.c); c.l -= 1; DB.set('codes', codes); }
@@ -290,120 +270,115 @@
             const key = p.stock.shift();
             u.b -= (it.price - (appliedPromo ? appliedPromo.v/cart.length : 0));
             u.h.unshift({n: p.name, c: key, d: new Date().toLocaleString()});
-            DB.log(u.u, `ซื้อสินค้า: ${p.name}`);
         });
 
         DB.set('users', us); DB.set('prods', prods);
-        cart = []; appliedPromo = null; updateUI(); renderProds();
-        Swal.fire('สั่งซื้อสำเร็จ!','รับสินค้าได้ที่หน้าประวัติการใช้งาน','success');
+        cart = []; appliedPromo = null; updateBalance(); renderProds();
+        Swal.fire('สำเร็จ!','การสั่งซื้อเรียบร้อย ตรวจสอบที่ประวัติการสั่งซื้อ','success');
     }
 
-    // --- USER PROFILE ---
+    // --- User Management ---
     function editAddress() {
         let us = DB.get('users'), u = us.find(x => x.u === session.u);
-        Swal.fire({ title: 'ที่อยู่จัดส่ง', input: 'textarea', inputValue: u.addr, inputPlaceholder: 'บ้านเลขที่ แขวง เขต จังหวัด...' }).then(r => {
-            if(r.isConfirmed) { u.addr = r.value; DB.set('users', us); DB.log(u.u, 'อัปเดตที่อยู่'); }
+        Swal.fire({ title: 'ที่อยู่ปัจจุบัน', input: 'textarea', inputValue: u.addr, inputPlaceholder: 'กรอกที่อยู่สำหรับการจัดส่ง...' }).then(r => {
+            if(r.isConfirmed) { u.addr = r.value; DB.set('users', us); Swal.fire('บันทึกแล้ว','','success'); }
         });
     }
 
     function topupMenu() {
         const c = DB.conf();
         Swal.fire({
-            title: 'เติมเครดิต',
-            html: `<div style="text-align:left; color:#1a1a20; line-height:1.8;">
-                <p>🏦 <b>ธนาคาร ${c.bank_t}:</b> ${c.bank_n}</p>
-                <p>📱 <b>TrueMoney Wallet:</b> ${c.wallet}</p>
-                <p>👤 <b>ชื่อบัญชี:</b> ${c.owner}</p><hr>
-                <div class="input-group"><i class="fa-solid fa-baht-sign"></i><input id="t_v" type="number" placeholder="ยอดเงินที่โอน" style="color:#000; border:2px solid #eee;"></div>
-                <div class="input-group"><i class="fa-solid fa-hashtag"></i><input id="t_ref" placeholder="เลขอ้างอิง/ลิงก์ซอง" style="color:#000; border:2px solid #eee;"></div>
-            </div>`, confirmButtonText: 'แจ้งการโอน'
+            title: 'เมนูเติมเงิน',
+            html: `<div style="text-align:left; color:#111; line-height:2;">
+                🏦 <b>ธนาคาร ${c.bank_t}:</b> ${c.bank_n}<br>
+                📱 <b>TrueMoney:</b> ${c.wallet}<br>
+                👤 <b>ชื่อ:</b> ${c.owner}<hr>
+                <input id="t_v" type="number" class="glass-in" placeholder="ยอดเงิน" style="color:#000; border:1px solid #ccc; margin-bottom:10px;">
+                <input id="t_ref" class="glass-in" placeholder="เลขอ้างอิง/ลิงก์ซอง" style="color:#000; border:1px solid #ccc;">
+            </div>`, confirmButtonText: 'ยืนยันการแจ้งโอน'
         }).then(r => {
             if(r.isConfirmed) {
                 let us = DB.get('users'), u = us.find(x => x.u === session.u);
-                u.h.unshift({n: 'แจ้งเติมเงิน', c: document.getElementById('t_v').value, d: new Date().toLocaleString(), status: 'pending', ref: document.getElementById('t_ref').value});
+                u.h.unshift({n: 'แจ้งโอนเงิน', c: document.getElementById('t_v').value, d: new Date().toLocaleString(), status: 'ค้างตรวจสอบ', ref: document.getElementById('t_ref').value});
                 DB.set('users', us); DB.log(u.u, `แจ้งเติมเงิน ฿${document.getElementById('t_v').value}`);
-                Swal.fire('ส่งเรื่องแล้ว','แอดมินจะตรวจสอบโดยเร็ว','success');
+                Swal.fire('เรียบร้อย','รอแอดมินตรวจสอบยอดเงิน','success');
             }
         });
     }
 
-    function contactLine() { window.open(`https://line.me/ti/p/${DB.conf().line}`, '_blank'); }
+    function contactFB() { window.open(DB.conf().fb, '_blank'); }
+    function contactLine() { window.open(DB.conf().line, '_blank'); }
+
     function history() {
         const u = DB.get('users').find(x => x.u === session.u);
-        Swal.fire({ title: 'ประวัติธุรกรรม', width:'600px', html: `<div style="text-align:left; max-height:400px; overflow-y:auto;">${u.h.map(x=>`<div style="padding:12px; border-bottom:1px solid #eee; font-size:0.9rem;">${x.d}<br><b>${x.n}</b>: <span style="color:var(--p)">${x.c}</span> ${x.status?`<b>(${x.status})</b>`:''}</div>`).join('') || 'ไม่มีข้อมูล'}</div>` });
+        Swal.fire({ title: 'ประวัติธุรกรรม', width: '650px', html: `<div style="text-align:left; max-height:400px; overflow-y:auto; font-size:0.9rem;">${u.h.map(x=>`<div style="padding:15px; border-bottom:1px solid #eee;">${x.d}<br><b>${x.n}</b>: <span style="color:var(--p)">${x.c}</span> ${x.status?`<b>(${x.status})</b>`:''}</div>`).join('') || 'ไม่มีประวัติ'}</div>` });
     }
 
-    // --- ADMIN SUPREME PANEL ---
+    // --- Admin Control Panel ---
     function openAdmin() {
         const c = DB.conf(), us = DB.get('users'), p = DB.get('prods'), cats = DB.get('cats'), codes = DB.get('codes'), logs = DB.get('logs');
         let pending = [];
-        us.forEach(u => u.h.forEach((h, i) => { if(h.status === 'pending') pending.push({u: u.u, h, i}) }));
+        us.forEach(u => u.h.forEach((h, i) => { if(h.status === 'ค้างตรวจสอบ') pending.push({u: u.u, h, i}) }));
 
         Swal.fire({
-            title: 'ADMIN SUPREME V90', width: '1100px',
+            title: 'ADMIN V110 SUPREME', width: '1150px',
             html: `
-                <div style="display:grid; grid-template-columns: 240px 1fr; gap:25px; text-align:left; color:#1a1a20;">
-                    <div style="background:#f1f2f6; padding:15px; border-radius:30px; display:flex; flex-direction:column; gap:12px;">
-                        <button class="btn btn-p" onclick="tab('t1')"><i class="fa-solid fa-money-bill"></i> เติมเงิน (${pending.length})</button>
-                        <button class="btn btn-p" onclick="tab('t2')"><i class="fa-solid fa-box"></i> สินค้า/หมวดหมู่</button>
-                        <button class="btn btn-p" onclick="tab('t3')"><i class="fa-solid fa-users"></i> สมาชิกทั้งหมด</button>
-                        <button class="btn btn-p" onclick="tab('t4')"><i class="fa-solid fa-ticket"></i> โค้ดส่วนลด</button>
-                        <button class="btn btn-p" onclick="tab('t5')"><i class="fa-solid fa-cog"></i> ตั้งค่าระบบ</button>
-                        <button class="btn btn-p" onclick="tab('t6')" style="background:#2d3436;"><i class="fa-solid fa-list-ul"></i> บันทึก Log</button>
+                <div style="display:grid; grid-template-columns: 240px 1fr; gap:25px; text-align:left; color:#111;">
+                    <div style="background:#f1f5f9; padding:20px; border-radius:30px; display:flex; flex-direction:column; gap:12px;">
+                        <button class="btn btn-p" onclick="admTab('a1')">💳 แจ้งโอน (${pending.length})</button>
+                        <button class="btn btn-p" onclick="admTab('a2')">📦 คลังสินค้า</button>
+                        <button class="btn btn-p" onclick="admTab('a3')">👥 สมาชิก</button>
+                        <button class="btn btn-p" onclick="admTab('a4')">🎟️ โค้ดส่วนลด</button>
+                        <button class="btn btn-p" onclick="admTab('a5')">⚙️ ตั้งค่าระบบ</button>
+                        <button class="btn btn-p" onclick="admTab('a6')" style="background:#222;">📜 ประวัติ Log</button>
                     </div>
-                    <div style="max-height:600px; overflow-y:auto; padding:10px; background:#fff; border-radius:25px;">
-                        <div id="t1" class="tab-content active">
-                            <b>💰 รายการค้างตรวจสอบ:</b>
-                            ${pending.map(x => `<div class="admin-item"><span>${x.u}: ฿${x.h.c} (${x.h.ref})</span><button onclick="approveMoney('${x.u}', ${x.i})" class="btn-p" style="padding:5px 12px;">อนุมัติ</button></div>`).join('') || '<p>ไม่มีรายการ</p>'}
+                    <div style="max-height:600px; overflow-y:auto; padding:20px; background:#fff; border-radius:25px; box-shadow:inset 0 0 20px rgba(0,0,0,0.05);">
+                        <div id="a1" class="adm-tab active">
+                            <b>💰 รายการรออนุมัติ:</b>
+                            ${pending.map(x => `<div class="admin-box"><span>${x.u}: ฿${x.h.c} (${x.h.ref})</span><button onclick="approveMoney('${x.u}', ${x.i})" class="btn-p" style="padding:5px 15px;">อนุมัติ</button></div>`).join('') || '<p>ไม่มีรายการ</p>'}
                         </div>
-                        <div id="t2" class="tab-content">
-                            <b>📂 หมวดหมู่:</b> ${cats.join(', ')} <button onclick="addCat()">+เพิ่ม</button> <button onclick="delCat()">-ลบ</button><hr>
-                            <button class="btn btn-p" style="width:100%;" onclick="addItem()">+ เพิ่มสินค้า</button>
-                            ${p.map(x => `<div class="admin-item"><span>${x.name} (฿${x.price})</span><i class="fa-solid fa-trash" style="color:red; cursor:pointer;" onclick="delProd(${x.id})"></i></div>`).join('')}
+                        <div id="a2" class="adm-tab">
+                            <b>📂 หมวดหมู่:</b> ${cats.join(', ')} <button onclick="addCat()">+</button> <button onclick="delCat()">-</button><hr>
+                            <button class="btn btn-p" style="width:100%;" onclick="addItem()">+ เพิ่มสินค้าใหม่</button>
+                            ${p.map(x => `<div class="admin-box"><span>${x.name}</span><i class="fa fa-trash" style="color:red; cursor:pointer;" onclick="delProd(${x.id})"></i></div>`).join('')}
                         </div>
-                        <div id="t3" class="tab-content">
-                            <b>👥 จัดการสมาชิก:</b>
+                        <div id="a3" class="adm-tab">
+                            <b>👥 การจัดการสมาชิก:</b>
                             ${us.map(u => `
-                                <div class="admin-item">
+                                <div class="admin-box">
                                     <div><b>${u.u}</b> (฿${u.b.toLocaleString()})</div>
                                     <div style="display:flex; gap:8px;">
-                                        <button onclick="admUser('${u.u}','money')" style="font-size:0.75rem;">แก้เงิน</button>
-                                        <button onclick="admUser('${u.u}','pass')" style="font-size:0.75rem;">เปลี่ยนรหัส</button>
-                                        ${u.u!=='admin' ? `<button onclick="delUser('${u.u}')" style="background:red; color:white; border:none; border-radius:8px; padding:5px; font-size:0.75rem;">ลบ</button>` : ''}
+                                        <button onclick="admU('${u.u}','money')" style="font-size:0.75rem;">เงิน</button>
+                                        <button onclick="admU('${u.u}','pass')" style="font-size:0.75rem;">รหัส</button>
+                                        ${u.u!=='admin' ? `<button onclick="delU('${u.u}')" style="background:red; color:#fff; border:none; border-radius:8px; padding:5px;">ลบ</button>` : ''}
                                     </div>
                                 </div>
                             `).join('')}
                         </div>
-                        <div id="t4" class="tab-content">
+                        <div id="a4" class="adm-tab">
                             <b>🎟️ ระบบโค้ด:</b>
                             <button class="btn btn-p" style="width:100%; margin-bottom:15px;" onclick="addCode()">+ สร้างโค้ดใหม่</button>
-                            ${codes.map(x => `<div class="admin-item"><span><b>${x.c}</b> (ลด ฿${x.v})<br><small>เหลือให้ใช้: ${x.l} ครั้ง</small></span>
-                                <div style="display:flex; gap:5px;">
-                                    <button onclick="adjCode('${x.c}', 1)">+1</button>
-                                    <button onclick="adjCode('${x.c}', -1)">-1</button>
-                                    <i class="fa-solid fa-trash" style="color:red; cursor:pointer; margin-left:10px;" onclick="delCode('${x.c}')"></i>
-                                </div>
-                            </div>`).join('')}
+                            ${codes.map(x => `<div class="admin-box"><span><b>${x.c}</b> (ลด ฿${x.v}) เหลือ: <b>${x.l} ครั้ง</b></span><i class="fa fa-trash" style="color:red; cursor:pointer;" onclick="delCode('${x.c}')"></i></div>`).join('')}
                         </div>
-                        <div id="t5" class="tab-content">
-                            <b>🏷️ ทั่วไป:</b>
-                            <input id="a_n" value="${c.name}" placeholder="ชื่อร้าน" style="color:#000; border:1px solid #ddd;">
-                            <input id="a_l" value="${c.logo}" placeholder="ลิงก์โลโก้" style="color:#000; border:1px solid #ddd;">
-                            <input id="a_line" value="${c.line}" placeholder="LINE ID" style="color:#000; border:1px solid #ddd;">
+                        <div id="a5" class="adm-tab">
+                            <b>🏷️ ชื่อร้าน & โลโก้:</b>
+                            <input id="a_n" value="${c.name}" class="glass-in" style="color:#000; border:1px solid #ccc; margin-bottom:10px;">
+                            <input id="a_l" value="${c.logo}" class="glass-in" style="color:#000; border:1px solid #ccc;">
+                            <b>🔗 ลิงก์ติดต่อ (FB/Line):</b>
+                            <input id="a_fb" value="${c.fb}" placeholder="ลิงก์ Facebook" class="glass-in" style="color:#000; border:1px solid #ccc; margin-bottom:10px;">
+                            <input id="a_li" value="${c.line}" placeholder="ลิงก์ Line" class="glass-in" style="color:#000; border:1px solid #ccc;">
                             <hr><b>🏦 การเงิน:</b>
-                            <input id="a_bt" value="${c.bank_t}" placeholder="ธนาคาร" style="color:#000; border:1px solid #ddd;">
-                            <input id="a_bn" value="${c.bank_n}" placeholder="เลขบัญชี" style="color:#000; border:1px solid #ddd;">
-                            <input id="a_w" value="${c.wallet}" placeholder="เบอร์ Wallet" style="color:#000; border:1px solid #ddd;">
-                            <input id="a_o" value="${c.owner}" placeholder="ชื่อบัญชี" style="color:#000; border:1px solid #ddd;">
+                            <input id="a_bt" value="${c.bank_t}" class="glass-in" style="color:#000; border:1px solid #ccc; margin-bottom:10px;">
+                            <input id="a_bn" value="${c.bank_n}" class="glass-in" style="color:#000; border:1px solid #ccc; margin-bottom:10px;">
+                            <input id="a_w" value="${c.wallet}" class="glass-in" style="color:#000; border:1px solid #ccc; margin-bottom:10px;">
+                            <input id="a_o" value="${c.owner}" class="glass-in" style="color:#000; border:1px solid #ccc;">
                             <hr><b>🔐 แอดมิน:</b>
-                            <input id="a_pass" type="password" placeholder="เปลี่ยนรหัสผ่านแอดมิน" style="color:#000; border:1px solid #ddd;">
+                            <input id="a_p" type="password" placeholder="รหัสผ่านใหม่" class="glass-in" style="color:#000; border:1px solid #ccc;">
                             <button class="btn btn-p" style="width:100%;" onclick="saveAdmin()">บันทึกทั้งหมด</button>
                         </div>
-                        <div id="t6" class="tab-content">
+                        <div id="a6" class="adm-tab">
                             <b>📜 ประวัติระบบ:</b>
-                            <div style="font-size:0.8rem; line-height:1.6;">
-                                ${logs.map(l => `<div>[${l.d}] <b>${l.u}</b>: ${l.a}</div>`).join('')}
-                            </div>
+                            <div style="font-size:0.8rem; line-height:1.8;">${logs.map(l => `<div>[${l.d}] <b>${l.u}</b>: ${l.a}</div>`).join('')}</div>
                         </div>
                     </div>
                 </div>
@@ -411,36 +386,37 @@
         });
     }
 
-    function tab(id) { document.querySelectorAll('.tab-content').forEach(x => x.classList.remove('active')); document.getElementById(id).classList.add('active'); }
+    function admTab(id) { document.querySelectorAll('.adm-tab').forEach(x => x.classList.remove('active')); document.getElementById(id).classList.add('active'); }
 
-    // --- ADMIN LOGIC ---
+    // --- Admin Functions ---
     function approveMoney(uName, i) {
         Swal.fire({title:'ระบุเงินที่ได้รับจริง', input:'number'}).then(r => {
             if(r.value) {
                 let us = DB.get('users'), u = us.find(x => x.u === uName);
-                u.b += parseFloat(r.value); u.h[i].status = 'อนุมัติแล้ว';
-                DB.set('users', us); DB.log('admin', `อนุมัติเงิน ${uName} +฿${r.value}`); updateUI(); openAdmin();
+                u.b += parseFloat(r.value); u.h[i].status = 'SUCCESS';
+                DB.set('users', us); DB.log('admin', `อนุมัติเงิน ${uName} ฿${r.value}`); updateBalance(); openAdmin();
             }
         });
     }
 
-    function admUser(uName, type) {
+    function admU(uName, type) {
         let us = DB.get('users'), u = us.find(x => x.u === uName);
         if(type === 'money') {
-            Swal.fire({title:`แก้ไขเงินของ ${uName}`, input:'number', inputValue: u.b}).then(r => { if(r.value){ u.b = parseFloat(r.value); DB.set('users', us); updateUI(); openAdmin(); } });
+            Swal.fire({title:`แก้ไขเงิน ${uName}`, input:'number', inputValue: u.b}).then(r => { if(r.value){ u.b = parseFloat(r.value); DB.set('users', us); updateBalance(); openAdmin(); } });
         } else {
-            Swal.fire({title:`ตั้งรหัสผ่านใหม่ให้ ${uName}`, input:'text'}).then(r => { if(r.value){ u.p = r.value; DB.set('users', us); openAdmin(); } });
+            Swal.fire({title:`รหัสผ่านใหม่ของ ${uName}`, input:'text'}).then(r => { if(r.value){ u.p = r.value; DB.set('users', us); openAdmin(); } });
         }
     }
 
-    function delUser(uName) { Swal.fire({title:`ลบ ${uName}?`, showCancelButton:true}).then(r => { if(r.isConfirmed){ let us = DB.get('users').filter(x => x.u !== uName); DB.set('users', us); openAdmin(); } }); }
+    function delU(uName) { let us = DB.get('users').filter(x => x.u !== uName); DB.set('users', us); openAdmin(); }
+    
     function addItem() {
         const cats = DB.get('cats');
         Swal.fire({
-            title: 'เพิ่มสินค้าใหม่',
-            html: `<input id="i_n" placeholder="ชื่อสินค้า" style="color:#000;"><input id="i_p" type="number" placeholder="ราคา" style="color:#000;">
-                   <select id="i_c" style="color:#000;">${cats.map(x=>`<option value="${x}">${x}</option>`).join('')}</select>
-                   <input id="i_img" placeholder="ลิงก์รูป (ทุกขนาด)" style="color:#000;"><textarea id="i_s" placeholder="สต็อก (บรรทัดละ 1 คีย์)" style="color:#000;"></textarea>`
+            title: 'เพิ่มสินค้า',
+            html: `<input id="i_n" placeholder="ชื่อสินค้า" class="glass-in" style="color:#000; border:1px solid #ccc; margin-bottom:10px;"><input id="i_p" type="number" placeholder="ราคา" class="glass-in" style="color:#000; border:1px solid #ccc; margin-bottom:10px;">
+                   <select id="i_c" class="glass-in" style="color:#000; border:1px solid #ccc; margin-bottom:10px;">${cats.map(x=>`<option value="${x}">${x}</option>`).join('')}</select>
+                   <input id="i_img" placeholder="ลิงก์รูปภาพ" class="glass-in" style="color:#000; border:1px solid #ccc; margin-bottom:10px;"><textarea id="i_s" placeholder="สต็อก (บรรทัดละ 1 อัน)" class="glass-in" style="color:#000; border:1px solid #ccc; height:100px;"></textarea>`
         }).then(r => { if(r.isConfirmed){
             let p = DB.get('prods');
             p.push({id:Date.now(), name:document.getElementById('i_n').value, price:parseFloat(document.getElementById('i_p').value), cat:document.getElementById('i_c').value, img:document.getElementById('i_img').value, stock:document.getElementById('i_s').value.split('\n').filter(x=>x.trim())});
@@ -448,33 +424,29 @@
         }});
     }
 
-    function addCat() { Swal.fire({title:'ชื่อหมวดหมู่', input:'text'}).then(r => { if(r.value){ let c=DB.get('cats'); c.push(r.value); DB.set('cats',c); renderCats(); openAdmin(); } }); }
-    function delCat() { Swal.fire({title:'ชื่อหมวดหมู่ที่จะลบ', input:'text'}).then(r => { if(r.value){ let c=DB.get('cats').filter(x=>x!==r.value); DB.set('cats',c); renderCats(); openAdmin(); } }); }
+    function addCat() { Swal.fire({title:'ชื่อหมวดหมู่ใหม่', input:'text'}).then(r => { if(r.value){ let c=DB.get('cats'); c.push(r.value); DB.set('cats',c); renderCats(); openAdmin(); } }); }
+    function delCat() { Swal.fire({title:'ชื่อหมวดหมู่ที่ต้องการลบ', input:'text'}).then(r => { if(r.value){ let c=DB.get('cats').filter(x=>x!==r.value); DB.set('cats',c); renderCats(); openAdmin(); } }); }
 
     function addCode() {
-        Swal.fire({title:'สร้างโค้ดส่วนลด', html:`<input id="c_c" placeholder="โค้ด" style="color:#000;"><input id="c_v" type="number" placeholder="ลดกี่บาท" style="color:#000;"><input id="c_l" type="number" placeholder="ใช้ได้กี่ครั้ง" style="color:#000;">`}).then(r => {
+        Swal.fire({title:'สร้างโค้ดส่วนลด', html:`<input id="c_c" placeholder="รหัสโค้ด" class="glass-in" style="color:#000; border:1px solid #ccc; margin-bottom:10px;"><input id="c_v" type="number" placeholder="ลดกี่บาท" class="glass-in" style="color:#000; border:1px solid #ccc; margin-bottom:10px;"><input id="c_l" type="number" placeholder="ใช้ได้กี่ครั้ง" class="glass-in" style="color:#000; border:1px solid #ccc;">`}).then(r => {
             if(r.isConfirmed){ let c=DB.get('codes'); c.push({c:document.getElementById('c_c').value, v:parseFloat(document.getElementById('c_v').value), l:parseInt(document.getElementById('c_l').value)}); DB.set('codes',c); openAdmin(); }
         });
-    }
-
-    function adjCode(codeName, val) {
-        let codes = DB.get('codes'), c = codes.find(x => x.c === codeName);
-        if(c) { c.l += val; if(c.l < 0) c.l = 0; DB.set('codes', codes); openAdmin(); }
     }
 
     function delCode(n) { let c=DB.get('codes').filter(x=>x.c!==n); DB.set('codes',c); openAdmin(); }
     function delProd(id) { let p=DB.get('prods').filter(x=>x.id!==id); DB.set('prods',p); renderProds(); openAdmin(); }
 
     function saveAdmin() {
-        const c = DB.conf(), newP = document.getElementById('a_pass').value;
+        const c = DB.conf(), newP = document.getElementById('a_p').value;
         c.name = document.getElementById('a_n').value; c.logo = document.getElementById('a_l').value;
-        c.line = document.getElementById('a_line').value; c.bank_t = document.getElementById('a_bt').value;
-        c.bank_n = document.getElementById('a_bn').value; c.wallet = document.getElementById('a_w').value;
-        c.owner = document.getElementById('a_o').value;
-        DB.set('v90_c', c);
+        c.bank_t = document.getElementById('a_bt').value; c.bank_n = document.getElementById('a_bn').value;
+        c.wallet = document.getElementById('a_w').value; c.owner = document.getElementById('a_o').value;
+        c.fb = document.getElementById('a_fb').value; c.line = document.getElementById('a_li').value;
+        DB.set('v110_c', c);
         if(newP) { let us = DB.get('users'); us.find(x=>x.u==='admin').p = newP; DB.set('users', us); }
         location.reload();
     }
 </script>
+<style>.adm-tab { display: none; } .adm-tab.active { display: block; animation: fadeInUp 0.4s ease; } @keyframes fadeInUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }</style>
 </body>
 </html>
